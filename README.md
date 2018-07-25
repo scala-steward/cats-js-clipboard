@@ -2,7 +2,10 @@
 
 [![Build Status](https://travis-ci.org/bpholt/cats-js-clipboard.svg?branch=master)](https://travis-ci.org/bpholt/cats-js-clipboard)
 
+Add the following to your `build.sbt` to bring `cats-js-clipboard` into your Scala.js project:
+
 ```scala
+resolvers += Resolver.bintrayRepo("bpholt", "maven")
 libraryDependencies += "com.planetholt" %%% "cats-js-clipboard" % "0.1.0"
 ```
 
