@@ -2,8 +2,6 @@ lazy val commonSettings = Seq(
   organization := "com.planetholt",
   homepage := Some(url("https://github.com/bpholt/cats-js-clipboard")),
   licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-  releaseVersionBump := sbtrelease.Version.Bump.Minor,
-  releaseCrossBuild := true,
   startYear := Option(2018),
   libraryDependencies ++= {
     Seq(
@@ -79,8 +77,18 @@ lazy val bintraySettings = Seq(
   pomIncludeRepository := { _ ⇒ false }
 )
 
+lazy val releaseSettings = {
+  import sbtrelease.ReleaseStateTransformations._
+
+  Seq(
+    releaseVersionBump := sbtrelease.Version.Bump.Minor,
+    releaseCrossBuild := true,
+    releaseProcess -= runTest,
+  )
+}
+
 lazy val `cats-js-clipboard` = (project in file("."))
   .settings(Seq(
     description := "cats-effect wrapped utility for copying text to the clipboard from JavaScript",
-  ) ++ commonSettings ++ bintraySettings: _*)
+  ) ++ commonSettings ++ bintraySettings ++ releaseSettings: _*)
   .enablePlugins(ScalaJSPlugin)
