@@ -1,0 +1,12 @@
+language: scala
+
+scala:
+  - 2.11.12
+  - 2.12.6
+
+jdk: oraclejdk8
+
+before_script:
+  - jdk_switcher use $JDK
+
+script: sbt ++$TRAVIS_SCALA_VERSION fullOptJS

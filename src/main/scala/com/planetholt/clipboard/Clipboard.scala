@@ -5,7 +5,6 @@ import cats.effect._
 import cats.implicits._
 import org.scalajs.dom.html.Document
 import org.scalajs.dom.raw._
-import org.scalajs.dom.window
 
 import scala.scalajs.js
 import scala.scalajs.js.Promise
@@ -15,7 +14,8 @@ import scala.scalajs.js.JSConverters._
 @JSExportTopLevel("Clipboard")
 object Clipboard {
   import scala.concurrent.ExecutionContext.Implicits.global
-  implicit val document = org.scalajs.dom.document
+  private implicit val document = org.scalajs.dom.document
+  private implicit val window = org.scalajs.dom.window
 
   @JSExport
   def copy(text: String): Promise[Boolean] =
@@ -26,7 +26,7 @@ object Clipboard {
 
 }
 
-class Clipboard[F[_] : Effect](implicit document: Document) {
+class Clipboard[F[_] : Effect](implicit document: Document, window: Window) {
   def copy(text: String): F[Boolean] =
     for {
       textElement ← createElementWithText("pre", text)
@@ -50,7 +50,7 @@ class Clipboard[F[_] : Effect](implicit document: Document) {
   }
 
   private def buildListener(textElement: Element, button: Element): F[Unit] = Sync[F].delay {
-    lazy val clickListener: js.Function1[Event, Any] = _ ⇒ {
+    lazy val clickListener: js.Function1[Event, Any] = (_: Event) ⇒ {
       val value: F[Unit] = for {
         success ← copyNodeContents(textElement)
         _ ← if (success)
