@@ -8,7 +8,7 @@ import org.scalajs.dom.raw._
 
 import scala.scalajs.js
 import scala.scalajs.js.Promise
-import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
+import scala.scalajs.js.annotation._
 import scala.scalajs.js.JSConverters._
 
 @JSExportTopLevel("Clipboard")
@@ -29,13 +29,13 @@ object Clipboard {
 class Clipboard[F[_] : Effect](implicit document: Document, window: Window) {
   def copy(text: String): F[Boolean] =
     for {
-      textElement ← createElementWithText("pre", text)
-      button ← createElementWithText("button", "Click to Copy")
-      _ ← buildListener(textElement, button)
-      _ ← appendChild(textElement)
-      _ ← appendChild(button)
-      copySuccess ← copyNodeContents(textElement)
-      _ ← if (copySuccess) cleanup(textElement, button) else scrollElementIntoView(button)
+      textElement <- createElementWithText("pre", text)
+      button <- createElementWithText("button", "Click to Copy")
+      _ <- buildListener(textElement, button)
+      _ <- appendChild(textElement)
+      _ <- appendChild(button)
+      copySuccess <- copyNodeContents(textElement)
+      _ <- if (copySuccess) cleanup(textElement, button) else scrollElementIntoView(button)
     } yield copySuccess
 
   private def scrollElementIntoView(element: Element): F[Unit] = Sync[F].delay(element.scrollIntoView())
@@ -50,20 +50,20 @@ class Clipboard[F[_] : Effect](implicit document: Document, window: Window) {
   }
 
   private def buildListener(textElement: Element, button: Element): F[Unit] = Sync[F].delay {
-    lazy val clickListener: js.Function1[Event, Any] = (_: Event) ⇒ {
-      val value: F[Unit] = for {
-        success ← copyNodeContents(textElement)
-        _ ← if (success)
+    lazy val clickListener: js.Function1[Event, Any] = (_: Event) => {
+      val copyAndCleanUp: F[Unit] = for {
+        success <- copyNodeContents(textElement)
+        _ <- if (success)
           for {
-            _ ← cleanup(textElement, button)
-            _ ← Sync[F].delay(button.removeEventListener("click", clickListener))
+            _ <- cleanup(textElement, button)
+            _ <- Sync[F].delay(button.removeEventListener("click", clickListener))
           } yield ()
         else Applicative[F].unit
       } yield ()
 
-      IO.async { cb: (Either[Throwable, Unit] ⇒ Unit) ⇒
-        Effect[F].runAsync(value)(r ⇒ IO(cb(r))).unsafeRunSync()
-      }.unsafeRunAsync(_ ⇒ ())
+      IO.async[Unit] { cb =>
+        Effect[F].runAsync(copyAndCleanUp)(r => IO(cb(r))).unsafeRunSync()
+      }.unsafeRunAsync(_ => ())
     }
 
     button.addEventListener("click", clickListener)
@@ -73,23 +73,23 @@ class Clipboard[F[_] : Effect](implicit document: Document, window: Window) {
 
   private def removeAllRanges(): F[Unit] =
     for {
-      selection ← windowSelection()
-      _ ← Sync[F].delay(selection.removeAllRanges())
+      selection <- windowSelection()
+      _ <- Sync[F].delay(selection.removeAllRanges())
     } yield ()
 
   private def copyNodeContents(element: Element): F[Boolean] =
     for {
-      _ ← removeAllRanges()
-      range ← Sync[F].delay(document.createRange())
-      _ ← Sync[F].delay(range.selectNode(element))
-      selection ← windowSelection()
-      _ ← Sync[F].delay(selection.addRange(range))
-      success ← Sync[F].delay(document.execCommand("copy"))
+      _ <- removeAllRanges()
+      range <- Sync[F].delay(document.createRange())
+      _ <- Sync[F].delay(range.selectNode(element))
+      selection <- windowSelection()
+      _ <- Sync[F].delay(selection.addRange(range))
+      success <- Sync[F].delay(document.execCommand("copy"))
     } yield success
 
   private def cleanup(elements: Element*): F[Unit] =
     for {
-      _ ← removeAllRanges()
-      _ ← elements.toList.map(node ⇒ Sync[F].delay(node.parentNode.removeChild(node))).sequence
+      _ <- removeAllRanges()
+      _ <- elements.toList.map(node => Sync[F].delay(node.parentNode.removeChild(node))).sequence
     } yield ()
 }
