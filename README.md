@@ -1,12 +1,14 @@
 # cats-js-clipboard
 
 [![Build Status](https://travis-ci.org/bpholt/cats-js-clipboard.svg?branch=master)](https://travis-ci.org/bpholt/cats-js-clipboard)
+[![Bintray](https://img.shields.io/bintray/v/bpholt/maven/cats-js-clipboard.svg?style=flat-square)](https://bintray.com/bpholt/maven/cats-js-clipboard/view)
+[![license](https://img.shields.io/github/license/bpholt/cats-js-clipboard.svg?style=flat-square)]()
 
 Add the following to your `build.sbt` to bring `cats-js-clipboard` into your Scala.js project:
 
 ```scala
 resolvers += Resolver.bintrayRepo("bpholt", "maven")
-libraryDependencies += "com.planetholt" %%% "cats-js-clipboard" % "0.1.0"
+libraryDependencies += "com.planetholt" %%% "cats-js-clipboard" % "0.2.0"
 ```
 
 To use:
