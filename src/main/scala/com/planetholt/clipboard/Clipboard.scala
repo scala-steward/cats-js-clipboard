@@ -17,6 +17,8 @@ object Clipboard {
   private implicit val document = org.scalajs.dom.document
   private implicit val window = org.scalajs.dom.window
 
+  def apply[F[_]](implicit C: Clipboard[F]): Clipboard[F] = C
+
   @JSExport
   def copy(text: String): Promise[Boolean] =
     new Clipboard[IO]
