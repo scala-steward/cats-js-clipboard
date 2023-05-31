@@ -1,5 +1,6 @@
-addSbtPlugin("org.foundweekends" % "sbt-bintray" % "0.5.6")
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
-addSbtPlugin("com.dwijnand" % "sbt-travisci" % "1.2.0")
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.2.0")
-addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.1.13")
+libraryDependencies += "org.scala-js" %% "scalajs-env-jsdom-nodejs" % "1.1.0"
+
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.13.1")
+addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.4.2")
+addSbtPlugin("org.typelevel" % "sbt-typelevel-ci-release" % "0.4.21")
+addSbtPlugin("org.typelevel" % "sbt-typelevel-mergify" % "0.4.21")
