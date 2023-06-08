@@ -28,7 +28,7 @@ ThisBuild / tlSonatypeUseLegacyHost := false
 
 lazy val `cats-js-clipboard` = (project in file("."))
   .settings(
-    crossScalaVersions := Seq("3.3.0", "2.13.10", "2.12.17"),
+    crossScalaVersions := Seq("3.3.0", "2.13.10", "2.12.18"),
     libraryDependencies ++= {
       Seq(
         "org.typelevel" %%% "cats-core" % "2.9.0",
