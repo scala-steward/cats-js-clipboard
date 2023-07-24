@@ -2,10 +2,12 @@ package dev.holt.clipboard
 
 import cats.effect._
 import cats.effect.std.Dispatcher
+import cats.effect.unsafe.IORuntime
 import cats.syntax.all._
 import org.scalajs.dom._
 import org.scalajs.dom.html.Document
 
+import scala.concurrent.ExecutionContext
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters._
 import scala.scalajs.js.Promise
@@ -13,10 +15,8 @@ import scala.scalajs.js.annotation._
 
 @JSExportTopLevel("Clipboard")
 object Clipboard {
-
-  import cats.effect.unsafe.implicits.{global => ceGlobal}
-  import org.scalajs.macrotaskexecutor.MacrotaskExecutor.Implicits.{global => sjsGlobal}
-
+  private implicit val ioRuntime: IORuntime = cats.effect.unsafe.implicits.global
+  private implicit val executionContext: ExecutionContext = org.scalajs.macrotaskexecutor.MacrotaskExecutor.Implicits.global
   private implicit val document: Document = org.scalajs.dom.document
   private implicit val window: Window = org.scalajs.dom.window
 
