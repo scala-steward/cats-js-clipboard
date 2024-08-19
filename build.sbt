@@ -1,3 +1,5 @@
+import org.typelevel.scalacoptions.ScalacOptions
+
 ThisBuild / organization := "dev.holt"
 ThisBuild / homepage := Some(url("https://github.com/bpholt/cats-js-clipboard"))
 ThisBuild / licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
