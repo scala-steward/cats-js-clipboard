@@ -35,7 +35,7 @@ lazy val `cats-js-clipboard` = (project in file("."))
     ),
     libraryDependencies ++= {
       Seq(
-        "org.typelevel" %%% "cats-core" % "2.9.0",
+        "org.typelevel" %%% "cats-core" % "2.13.0",
         "org.typelevel" %%% "cats-effect" % "3.5.7",
         "org.scala-js" %%% "scalajs-dom" % "2.8.1",
         "org.scala-js" %%% "scala-js-macrotask-executor" % "1.1.1",
