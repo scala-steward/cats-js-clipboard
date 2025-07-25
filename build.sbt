@@ -37,7 +37,7 @@ lazy val `cats-js-clipboard` = (project in file("."))
       Seq(
         "org.typelevel" %%% "cats-core" % "2.9.0",
         "org.typelevel" %%% "cats-effect" % "3.5.1",
-        "org.scala-js" %%% "scalajs-dom" % "2.6.0",
+        "org.scala-js" %%% "scalajs-dom" % "2.8.1",
         "org.scala-js" %%% "scala-js-macrotask-executor" % "1.1.1",
       )
     },
