@@ -29,7 +29,7 @@ lazy val `cats-js-clipboard` = (project in file("."))
     crossScalaVersions := Seq(
       "3.3.6",
       "2.12.20",
-      "2.13.11",
+      "2.13.17",
     ),
     libraryDependencies ++= {
       Seq(
