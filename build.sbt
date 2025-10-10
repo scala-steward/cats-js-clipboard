@@ -27,7 +27,7 @@ ThisBuild / githubWorkflowBuildPreamble += WorkflowStep.Run(name = Option("Insta
 lazy val `cats-js-clipboard` = (project in file("."))
   .settings(
     crossScalaVersions := Seq(
-      "3.3.0",
+      "3.3.6",
       "2.12.18",
       "2.13.11",
     ),
